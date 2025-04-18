@@ -173,47 +173,48 @@
       line-height: 1.4;
     }
   @media (max-width: 600px) {
-        .calculator {
-            padding: 20px;
-        }
-
-        .tooltip .tooltiptext {
-           visibility: hidden;
-           opacity: 0;
-           transition: opacity 0.3s;
-           position: fixed;
-           z-index: 1000;
-           top: 30px;
-           left: 50%;
-           transform: translateX(-50%);
-           width: 90vw;
-           max-width: 360px;
-           box-sizing: border-box;
-           padding: 15px;
-           border-radius: 8px;
-           background-color: #5563DE;
-           color: #fff;
-           font-size: 12px;
-           line-height: 1.5;
-           text-align: left;
-           white-space: normal;
-           bottom: auto;
-           margin-left: 0;
-           margin-right: 0;
-        }
-
-        .tooltip .tooltiptext::after {
-           display: none;
-        }
-
-        .tooltip:hover .tooltiptext,
-        .tooltip:focus .tooltiptext,
-        .tooltip.active .tooltiptext
-         {
-           visibility: visible;
-           opacity: 1;
-        }
+    .calculator {
+        padding: 20px;
     }
+
+    .tooltip .tooltiptext {
+       visibility: hidden;
+       opacity: 0;
+       transition: opacity 0.3s, visibility 0s linear 0.3s;
+       position: absolute;
+       z-index: 10;
+       bottom: 115%;
+       left: 50%;
+       transform: translateX(-50%);
+       width: 90vw;
+       max-width: 320px;
+       margin-left: max(5vw - 50%, -45vw);
+       padding: 15px;
+       border-radius: 8px;
+       background-color: #5563DE;
+       color: #fff;
+       font-size: 12px;
+       line-height: 1.5;
+       text-align: left;
+       white-space: normal;
+       box-sizing: border-box;
+       top: auto;
+       right: auto;
+       margin-right: 0;
+    }
+
+    .tooltip .tooltiptext::after {
+       display: none;
+    }
+
+    .tooltip:hover .tooltiptext,
+    .tooltip:focus .tooltiptext,
+    .tooltip.active .tooltiptext {
+       visibility: visible;
+       opacity: 1;
+       transition: opacity 0.3s;
+    }
+}
   </style>
 </head>
 <body>
