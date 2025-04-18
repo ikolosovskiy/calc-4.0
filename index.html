@@ -172,14 +172,16 @@
       text-align: center;
       line-height: 1.4;
     }
-    @media (max-width: 600px) {
+      @media (max-width: 600px) {
         .calculator {
             padding: 20px;
         }
         .tooltip .tooltiptext {
            left: 50%;
            transform: translate(-50%, -110%);
-           width: 80%;
+           width: auto;
+           max-width: 85vw;
+           box-sizing: border-box;
         }
          .tooltip .tooltiptext::after {
             left: 50%;
