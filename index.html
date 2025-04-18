@@ -172,24 +172,23 @@
       text-align: center;
       line-height: 1.4;
     }
-             @media (max-width: 600px) {
+  @media (max-width: 600px) {
         .calculator {
-            padding: 20px; 
+            padding: 20px;
         }
 
         .tooltip .tooltiptext {
            visibility: hidden;
            opacity: 0;
+           transition: opacity 0.3s;
+           position: fixed;
+           z-index: 1000;
+           top: 30px;
+           left: 50%;
+           transform: translateX(-50%);
            width: 90vw;
-           max-width: 320px; 
-           position: absolute;
-           z-index: 10;
-           left: 5vw;       
-           right: 5vw;      
-           margin-left: auto; 
-           margin-right: auto; 
-           bottom: 115%;    
-           transform: none;      
+           max-width: 360px;
+           box-sizing: border-box;
            padding: 15px;
            border-radius: 8px;
            background-color: #5563DE;
@@ -198,25 +197,19 @@
            line-height: 1.5;
            text-align: left;
            white-space: normal;
-           box-sizing: border-box;
-           transition: opacity 0.3s;
-           top: auto; 
+           bottom: auto;
+           margin-left: 0;
+           margin-right: 0;
         }
 
         .tooltip .tooltiptext::after {
-           content: "";
-           position: absolute;
-           left: 50%; 
-           transform: translateX(-50%); 
-           top: 100%;  
-           border-width: 6px;
-           border-style: solid;
-           border-color: #5563DE transparent transparent transparent; 
-           margin-top: 0;
-           margin-left: 0;
+           display: none;
         }
 
-        .tooltip:hover .tooltiptext {
+        .tooltip:hover .tooltiptext,
+        .tooltip:focus .tooltiptext,
+        .tooltip.active .tooltiptext
+         {
            visibility: visible;
            opacity: 1;
         }
