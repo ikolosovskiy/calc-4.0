@@ -124,7 +124,6 @@
       display: inline-block;
     }
     .tooltip .tooltiptext {
-      /* Стилі для десктопу - залишаються як були */
       visibility: hidden;
       width: 250px;
       background-color: #5563DE;
@@ -141,10 +140,9 @@
       transition: opacity 0.3s;
       font-size: 12px;
       line-height: 1.5;
-      white-space: normal; /* Виправили тут раніше */
+      white-space: normal;
     }
     .tooltip .tooltiptext::after {
-       /* Стилі стрілки для десктопу - залишаються як були */
         content: "";
         position: absolute;
         top: 50%;
@@ -154,10 +152,7 @@
         border-style: solid;
         border-color: transparent transparent transparent #5563DE;
     }
-    /* Забираємо hover з CSS для мобільних, бо керує JS */
-    /* .tooltip:hover .tooltiptext { ... } */
-    /* Якщо потрібен hover на десктопі, його можна залишити тут, ПОЗА @media */
-     .tooltip:hover .tooltiptext {
+     .tooltip:hover .tooltiptext { 
        visibility: visible;
        opacity: 1;
      }
@@ -179,7 +174,6 @@
       line-height: 1.4;
     }
 
- /* --- Зміни ТІЛЬКИ всередині цього блоку @media --- */
  @media (max-width: 600px) {
     .calculator {
         padding: 20px;
@@ -188,14 +182,14 @@
     .tooltip .tooltiptext {
        visibility: hidden;
        opacity: 0;
-       transition: opacity 0.3s; /* Плавність для JS */
-       position: absolute;       /* Позиція відносно іконки */
+       transition: opacity 0.3s;
+       position: absolute;
        z-index: 10;
-       bottom: 115%;             /* Над іконкою */
-       left: 50%;                /* Центруємо відносно іконки */
-       transform: translateX(-50%); /* Точне центрування */
-       width: 90vw;              /* Ширина на мобільному */
-       max-width: 320px;         /* Макс. ширина */
+       bottom: 115%;
+       left: 50%;
+       transform: translateX(-50%);
+       width: 90vw;
+       max-width: 320px;
        padding: 15px;
        border-radius: 8px;
        background-color: #5563DE;
@@ -205,37 +199,32 @@
        text-align: left;
        white-space: normal;
        box-sizing: border-box;
-       top: auto;                /* Скидаємо стилі десктопу */
+       top: auto;
        right: auto;
        margin: 0;
     }
 
-    /* Приховуємо стрілку на мобільних */
     .tooltip .tooltiptext::after {
        display: none;
     }
 
-    /* Клас, який буде додавати JS для показу */
     .tooltip .tooltiptext.visible {
         visibility: visible;
         opacity: 1;
     }
 
-     /* Забираємо десктопний :hover для підказки на мобільних */
      .tooltip:hover .tooltiptext {
        visibility: hidden;
        opacity: 0;
      }
  }
- /* --- Кінець змін всередині @media --- */
-
   </style>
 </head>
 <body>
 
 <div class="calculator">
   <div class="logo-container">
-    <img src="logo.png" alt="Logo"> <!-- Переконайтесь, що файл logo.png існує -->
+    <img src="logo.png" alt="Logo"> 
   </div>
 
   <h2>Орієнтовний калькулятор субсидії на оренду житла для ВПО*</h2>
@@ -257,7 +246,7 @@
       </span>
     </span>
   </label>
-   <input type="number" id="income" placeholder="Введіть дохід" min="0" oninput="hideResult()" onblur="checkIncome()"> <!-- Змінено min="1" на min="0" для доходу -->
+   <input type="number" id="income" placeholder="Введіть дохід" min="0" oninput="hideResult()" onblur="checkIncome()">
 
    <label for="familyMembers">
     Кількість членів домогосподарства:
@@ -275,8 +264,8 @@
    <label for="settlementType">Оберіть тип населеного пункту:</label>
    <select id="settlementType" onchange="updateRegionOptions()">
      <option value="">Оберіть тип</option>
-     <option value="city">Обласний центр або місто Київ</option> <!-- Змінено текст для ясності -->
-     <option value="smallTown">Інші населені пункти області</option> <!-- Змінено текст для ясності -->
+     <option value="city">Обласний центр або місто Київ</option>
+     <option value="smallTown">Інші населені пункти області</option>
    </select>
 
    <label for="region">Оберіть область:</label>
@@ -293,7 +282,7 @@
       </span>
     </span>
   </label>
-   <input type="text" id="regionalCoefficient" readonly placeholder="Автоматично"> <!-- Додано placeholder -->
+   <input type="text" id="regionalCoefficient" readonly placeholder="Автоматично">
 
    <label for="rentedArea">
     Загальна площа орендованого житла (м²):
@@ -331,7 +320,7 @@
 </div>
 
 <script>
-  // --- Початок оригінального JS калькулятора ---
+
   const regionCoefficients = {
     city: {
         'Вінницька': 1.08, 'Волинська': 1.09, 'Дніпропетровська': 1.16, 'Донецька': 0.56,
@@ -359,7 +348,7 @@
     const settlementType = document.getElementById('settlementType').value;
     const regionSelect = document.getElementById('region');
     regionSelect.innerHTML = '<option value="">Оберіть область</option>';
-    document.getElementById('regionalCoefficient').value = ''; // Очищуємо коефіцієнт
+    document.getElementById('regionalCoefficient').value = '';
     hideResult();
 
     if (settlementType) {
@@ -367,26 +356,22 @@
       const regionsData = regionCoefficients[settlementType];
       const regions = Object.keys(regionsData);
 
-      // Коригуємо фільтрацію: показуємо м. Київ лише для типу "city", Київську область - лише для "smallTown"
       const filteredRegions = regions.filter(region => {
           if (settlementType === 'city') {
               return region !== 'Київська';
           } else if (settlementType === 'smallTown') {
               return region !== 'м. Київ';
           }
-          return false; // На випадок, якщо тип не city і не smallTown (не має бути)
+          return false;
       });
 
-      // Додаємо відповідний варіант для Києва/області
       if (settlementType === 'city') {
           filteredRegions.push('м. Київ');
       } else if (settlementType === 'smallTown') {
           filteredRegions.push('Київська');
       }
 
-
       filteredRegions.sort((a, b) => {
-          // Спеціальне сортування, щоб м. Київ було першим
           if (a === 'м. Київ') return -1;
           if (b === 'м. Київ') return 1;
           return a.localeCompare(b, 'uk');
@@ -401,7 +386,7 @@
       });
     } else {
         regionSelect.disabled = true;
-        document.getElementById('regionalCoefficient').value = ''; // Очищуємо коефіцієнт, якщо тип не обрано
+        document.getElementById('regionalCoefficient').value = '';
     }
   }
 
@@ -415,7 +400,7 @@
       let coeff = regionCoefficients[settlementType][region];
       coeffInput.value = coeff.toFixed(2);
     } else {
-        coeffInput.value = ''; // Очищуємо, якщо область не обрано або дані некоректні
+        coeffInput.value = '';
     }
   }
 
@@ -424,9 +409,10 @@
     const value = parseFloat(incomeField.value);
     if (!isNaN(value) && value < 0) {
       alert("Дохід не може бути від'ємним. Будь ласка, введіть коректне значення (0 або більше).");
-      incomeField.value = ''; // Очищуємо поле при невірному вводі
-    } else if (isNaN(value)) {
-        incomeField.value = ''; // Очищуємо, якщо введено не число
+      incomeField.value = '';
+    } else if (isNaN(value) && incomeField.value !== '') { 
+        alert("Будь ласка, введіть дохід у вигляді числа.");
+        incomeField.value = '';
     }
      hideResult();
   }
@@ -446,9 +432,9 @@
     resultDiv.innerHTML = '';
     resultDiv.style.display = 'none';
 
-    // Додаткова валідація на заповненість полів
     let errors = [];
-    if (incomeInput.value === '' || isNaN(parseFloat(incomeInput.value)) || parseFloat(incomeInput.value) < 0) errors.push("коректний середньомісячний дохід (0 або більше)");
+
+    if (incomeInput.value === '' || isNaN(parseFloat(incomeInput.value)) || parseFloat(incomeInput.value) < 0) errors.push("коректний середньомісячний дохід");
     if (familyMembersInput.value === '' || isNaN(parseInt(familyMembersInput.value)) || parseInt(familyMembersInput.value) <= 0) errors.push("коректну кількість членів домогосподарства (мінімум 1)");
     if (settlementTypeSelect.value === '') errors.push("тип населеного пункту");
     if (regionSelect.value === '') errors.push("область");
@@ -460,17 +446,15 @@
     if (errors.length > 0) {
       resultDiv.innerHTML = `<p style="color: #ffdddd; font-weight: bold;">Будь ласка, введіть/оберіть: ${errors.join(', ')}.</p>`;
       resultDiv.style.display = 'block';
-      resultDiv.style.background = '#d9534f'; // Червоний фон для помилок
+      resultDiv.style.background = '#d9534f';
       return;
     }
 
-    // Якщо помилок немає, продовжуємо з числовими значеннями
     const income = parseFloat(incomeInput.value);
     const familyMembers = parseInt(familyMembersInput.value);
     const regionalCoefficient = parseFloat(regionalCoefficientInput.value);
     const actualRent = parseFloat(actualRentInput.value);
     const rentedArea = parseFloat(rentedAreaInput.value);
-
 
     const costPerSqM = 208;
     const pm = 2920;
@@ -479,17 +463,13 @@
     const percentMultiplier = 20;
     const maxPercent = 20;
 
-
     let socialNormArea = (familyMembers === 1) ? minSocialArea : (socialAreaPerMember * familyMembers);
     socialNormArea = Math.max(socialNormArea, minSocialArea);
 
-
     const effectiveAreaForRentLimit = Math.min(socialNormArea, rentedArea);
-
 
     let maxAllowedRent = effectiveAreaForRentLimit * costPerSqM * regionalCoefficient;
     maxAllowedRent = parseFloat(maxAllowedRent.toFixed(2));
-
 
     const incomePerMemberForPercent = income / familyMembers;
     let percent_raw = (incomePerMemberForPercent / (2 * pm)) * percentMultiplier;
@@ -497,109 +477,113 @@
     let B = income * (percent_capped / 100);
     B = parseFloat(B.toFixed(2));
 
-
     let subsidyBaseRent = Math.min(actualRent, maxAllowedRent);
-
 
     let subsidy_calc = subsidyBaseRent - B;
     let subsidy = Math.max(0, subsidy_calc);
     subsidy = parseFloat(subsidy.toFixed(2));
 
-
     let familyPays = actualRent - subsidy;
     familyPays = Math.max(0, familyPays);
-    familyPays = Math.min(familyPays, actualRent); // Залишаємо на всяк випадок
+    familyPays = Math.min(familyPays, actualRent);
     familyPays = parseFloat(familyPays.toFixed(2));
-
 
     let resultHtml = '<div class="title">Результати розрахунку*</div>';
 
-    // Виводимо розмір субсидії
     resultHtml += `<p><strong>Орієнтовний розмір субсидії:</strong> <strong style="font-size: 1.1em;">${subsidy.toFixed(2)} грн</strong></p>`;
-
     resultHtml += `<p><strong>Сума, яку сплачує родина:</strong> ${familyPays.toFixed(2)} грн</p>`;
-    resultHtml += `<p><strong>Гранична вартість оренди житла для розрахунку:</strong> ${maxAllowedRent.toFixed(2)} грн</p>`; // Додано для ясності
-    resultHtml += '<p class="disclaimer" style="color: #eee; margin-top: 15px;">*Цей розрахунок є орієнтовним і не гарантує отримання субсидії. Остаточний розрахунок здійснює Пенсійний фонд України.</p>'; // Покращений текст
+    resultHtml += `<p><strong>Гранична вартість оренди житла для розрахунку:</strong> ${maxAllowedRent.toFixed(2)} грн</p>`;
+    resultHtml += '<p class="disclaimer" style="color: #eee; margin-top: 15px;">*Цей розрахунок є орієнтовним і не гарантує отримання субсидії. Остаточний розрахунок здійснює Пенсійний фонд України.</p>';
 
     resultDiv.innerHTML = resultHtml;
-    resultDiv.style.background = '#5563DE'; // Повертаємо стандартний фон
+    resultDiv.style.background = '#5563DE';
     resultDiv.style.display = 'block';
   }
-  // --- Кінець оригінального JS калькулятора ---
 
-
-  // +++ Початок JS для підказок +++
   document.addEventListener('DOMContentLoaded', () => {
     const isMobile = window.matchMedia("(max-width: 600px)").matches;
 
     if (isMobile) {
-      const tooltipContainers = document.querySelectorAll('.tooltip');
+        initializeMobileTooltips();
+    }
+  });
 
-      tooltipContainers.forEach(container => {
+  function initializeMobileTooltips() {
+    console.log("Initializing mobile tooltips..."); 
+    const tooltipContainers = document.querySelectorAll('.tooltip');
+
+    tooltipContainers.forEach(container => {
         const trigger = container.querySelector('.info-icon');
         const tooltipText = container.querySelector('.tooltiptext');
 
-        if (!trigger || !tooltipText) return;
+        if (!trigger || !tooltipText) {
+            console.warn("Tooltip trigger or text not found in:", container);
+            return;
+        }
 
         trigger.addEventListener('click', (event) => {
-          event.stopPropagation();
+            event.stopPropagation();
+            console.log("Tooltip icon clicked:", trigger);
 
-          const isCurrentlyVisible = tooltipText.classList.contains('visible');
+            const isCurrentlyVisible = tooltipText.classList.contains('visible');
 
-          // Спершу ховаємо ВСІ відкриті підказки
-          hideAllTooltips();
+            hideAllMobileTooltips(tooltipText); 
 
-          // Якщо ця підказка НЕ була видима, показуємо її і коригуємо
-          if (!isCurrentlyVisible) {
-            tooltipText.classList.add('visible');
-            adjustTooltipPosition(tooltipText);
-          }
-          // Якщо вона була видима, hideAllTooltips() її вже закрила
+            if (!isCurrentlyVisible) {
+                tooltipText.classList.add('visible');
+                console.log("Tooltip shown:", tooltipText);
+                adjustTooltipPosition(tooltipText);
+            } else {
+                 tooltipText.classList.remove('visible');
+                 console.log("Tooltip hidden by toggle:", tooltipText);
+                 tooltipText.style.transform = 'translateX(-50%)';
+            }
         });
-      });
+    });
 
-      // Клік будь-де на сторінці закриває підказки
-      document.body.addEventListener('click', () => {
-        hideAllTooltips();
-      });
-    }
-    // Для десктопу залишається логіка :hover з CSS
-  });
+    document.body.addEventListener('click', (event) => {
+       if (!event.target.closest('.tooltip')) {
+           console.log("Body clicked outside tooltip, hiding all.");
+            hideAllMobileTooltips();
+       }
+    }, false);
+  }
 
-  // Функція ховає всі видимі підказки (лише на мобільних)
-  function hideAllTooltips() {
+  function hideAllMobileTooltips(exceptThisOne = null) {
     document.querySelectorAll('.tooltip .tooltiptext.visible').forEach(visibleTooltip => {
-      visibleTooltip.classList.remove('visible');
-      // Скидаємо transform, щоб наступного разу він взявся з CSS
-      visibleTooltip.style.transform = 'translateX(-50%)';
+        if (visibleTooltip !== exceptThisOne) {
+            visibleTooltip.classList.remove('visible');
+            console.log("Hiding tooltip:", visibleTooltip);
+            visibleTooltip.style.transform = 'translateX(-50%)';
+        }
     });
   }
 
-  // Функція коригує позицію підказки, щоб вона не виходила за межі екрану
   function adjustTooltipPosition(tooltipText) {
     requestAnimationFrame(() => {
-      const rect = tooltipText.getBoundingClientRect();
-      const viewportWidth = window.innerWidth;
-      const margin = 10; // Відступ від країв екрану в пікселях
+        try {
+            const rect = tooltipText.getBoundingClientRect();
+            const viewportWidth = window.innerWidth;
+            const margin = 10;
 
-      let translateXCorrectionPx = 0; // Корекція в пікселях
+            let translateXCorrectionPx = 0;
 
-      // Перевірка лівого краю
-      if (rect.left < margin) {
-        const overflow = margin - rect.left;
-        translateXCorrectionPx = overflow; // Треба зсунути вправо
-      }
-      // Перевірка правого краю
-      else if (rect.right > viewportWidth - margin) {
-        const overflow = rect.right - (viewportWidth - margin);
-        translateXCorrectionPx = -overflow; // Треба зсунути вліво
-      }
+            if (rect.left < margin) {
+                const overflow = margin - rect.left;
+                translateXCorrectionPx = overflow;
+            }
+            else if (rect.right > viewportWidth - margin) {
+                const overflow = rect.right - (viewportWidth - margin);
+                translateXCorrectionPx = -overflow;
+            }
 
-      // Застосовуємо базовий зсув (-50%) і додаємо корекцію
-      tooltipText.style.transform = `translateX(calc(-50% + ${translateXCorrectionPx}px))`;
+            tooltipText.style.transform = `translateX(calc(-50% + ${translateXCorrectionPx}px))`;
+            console.log(`Adjusted transform for ${tooltipText.textContent.substring(0, 10)}... to: ${tooltipText.style.transform}`);
+        } catch (e) {
+            console.error("Error in adjustTooltipPosition:", e);
+        }
     });
   }
-  // +++ Кінець JS для підказок +++
 
 </script>
 
